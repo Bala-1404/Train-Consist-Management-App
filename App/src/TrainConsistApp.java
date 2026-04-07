@@ -1,74 +1,50 @@
-import java.util.ArrayList;
-import java.util.List;
-
-import java.util.LinkedList;
-
-import java.util.LinkedHashSet;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.*;
 
 public class TrainConsistApp {
+
+    static class Bogie {
+        String name;
+        int capacity;
+
+        Bogie(String name, int capacity) {
+            this.name = name;
+            this.capacity = capacity;
+        }
+    }
+
     public static void main(String[] args) {
 
+        System.out.println("=====================================");
+        System.out.println("UC9 - Group Bogies by Type");
+        System.out.println("=====================================\n");
 
-        class Bogie {
-            private String name;
-            private int capacity;
+        List<Bogie> bogies = new ArrayList<>();
 
-            public Bogie(String name, int capacity) {
-                this.name = name;
-                this.capacity = capacity;
-            }
+        bogies.add(new Bogie("Sleeper", 72));
+        bogies.add(new Bogie("AC Chair", 56));
+        bogies.add(new Bogie("First Class", 24));
+        bogies.add(new Bogie("Sleeper", 70));
+        bogies.add(new Bogie("AC Chair", 60));
 
-            public String getName() {
-                return name;
-            }
+        System.out.println("All Bogies:");
+        for (Bogie b : bogies) {
+            System.out.println(b.name + " -> " + b.capacity);
+        }
 
-            public int getCapacity() {
-                return capacity;
+        Map<String, List<Bogie>> groupedBogies =
+                bogies.stream()
+                        .collect(Collectors.groupingBy(b -> b.name));
+
+        System.out.println("\nGrouped Bogies:");
+
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println("\nBogie Type: " + entry.getKey());
+            for (Bogie b : entry.getValue()) {
+                System.out.println("Capacity -> " + b.capacity);
             }
         }
 
-        class Train {
-            private Map<String, Bogie> bogieMap = new HashMap<>();
-
-            public void addBogie(String name, int capacity) {
-                bogieMap.put(name, new Bogie(name, capacity));
-            }
-
-            public void displayBogies() {
-                for (Map.Entry<String, Bogie> entry : bogieMap.entrySet()) {
-                    Bogie b = entry.getValue();
-                    System.out.println("Bogie: " + b.getName() + " | Capacity: " + b.getCapacity());
-                }
-            }
-
-            public int getTotalCapacity() {
-                int total = 0;
-                for (Bogie b : bogieMap.values()) {
-                    total += b.getCapacity();
-                }
-                return total;
-            }
-        }
-
-                System.out.println("======================================");
-                System.out.println(" Train Consist Management ");
-                System.out.println("======================================");
-
-                Train train = new Train();
-
-                train.addBogie("Sleeper", 72);
-                train.addBogie("AC Chair", 78);
-                train.addBogie("First Class", 24);
-                train.addBogie("General", 90);
-
-                train.displayBogies();
-
-                System.out.println("Total Capacity: " + train.getTotalCapacity());
-            }
-        }
+        System.out.println("\nUC9 grouping completed...");
+    }
+}
